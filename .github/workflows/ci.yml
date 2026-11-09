@@ -1,0 +1,41 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-test-report:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Run Tests (Generate JSON)
+        id: jest_run
+        run: npx jest --json --outputFile=jest-results.json
+        continue-on-error: true
+
+      - name: Forward Report to Localhost
+        env:
+          RECEIVER_URL: ${{ secrets.NGROK_URL }}/report
+        run: node send-report.js
+
+      - name: Enforce Pipeline Status
+        if: steps.jest_run.outcome == 'failure'
+        run: exit 1
+
+      - name: Deploy to GitHub Pages (Bonus)
+        if: success() && github.ref == 'refs/heads/main'
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./
