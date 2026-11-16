@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Assignment Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f4f8;
+            color: #121212;
+            padding: 40px;
+            margin: 0;
+        }
+        h2, h3 {
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 16px;
+            border: 2px solid #121212;
+            background: #ffffff;
+            box-sizing: border-box;
+            outline: none;
+            border-radius: 0;
+        }
+        button {
+            background-color: #2b6cb0;
+            color: #ffffff;
+            padding: 14px 24px;
+            border: none;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            border-radius: 0;
+        }
+        button:hover {
+            background-color: #1a365d;
+        }
+        ul {
+            list-style-type: square;
+            padding-left: 20px;
+        }
+        li {
+            margin-bottom: 10px;
+            font-weight: 400;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Submit Assignment</h2>
+        <form id="submissionForm">
+            <input type="text" id="name" placeholder="Name" required>
+            <input type="text" id="regNo" placeholder="Registration No" required>
+            <input type="text" id="title" placeholder="Assignment Title" required>
+            <input type="url" id="url" placeholder="Submission URL" required>
+            <button type="submit">SUBMIT</button>
+        </form>
+        <h3>Submissions</h3>
+        <ul id="list"></ul>
+    </div>
+    <script>
+        document.getElementById('submissionForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const list = document.getElementById('list');
+            const li = document.createElement('li');
+            li.textContent = `${document.getElementById('name').value} - ${document.getElementById('url').value}`;
+            list.appendChild(li);
+            e.target.reset();
+        });
+    </script>
+</body>
+</html>
